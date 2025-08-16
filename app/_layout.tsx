@@ -1,16 +1,19 @@
 import '../global.css';
 
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { Stack } from 'expo-router';
 
 export default function Layout() {
-  const user = true;
+    const user = true;
 
-  return (
-    <Stack
-      screenOptions={{
-        headerShown: false,
-      }}>
-      {user ? <Stack.Screen name="(tabs)" /> : <Stack.Screen name="(auth)" />}
-    </Stack>
-  );
+    return (
+        <KeyboardProvider>
+            <Stack
+                screenOptions={{
+                    headerShown: false,
+                }}>
+                {user ? <Stack.Screen name="(tabs)" /> : <Stack.Screen name="(auth)" />}
+            </Stack>
+        </KeyboardProvider>
+    );
 }
