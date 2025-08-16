@@ -1,0 +1,406 @@
+import { Link, Tabs } from 'expo-router';
+import Feather from '@expo/vector-icons/Feather';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+
+import { FlatList, Image, Pressable, Text, TextInput, TouchableOpacity, View } from 'react-native';
+
+export type UserMiniType = {
+  id: string;
+  name: string;
+  username: string;
+  avatar: string;
+  lastMessage: string;
+  status: 'online' | 'offline' | 'away';
+  messageTime: string;
+};
+
+export const dummyUsers: UserMiniType[] = [
+  {
+    id: '1',
+    name: 'Alice Johnson',
+    username: 'alicej',
+    avatar: 'https://i.pravatar.cc/150?img=1',
+    lastMessage: 'Hey! Are you coming tonight?',
+    status: 'online',
+    messageTime: '5 mins ago',
+  },
+  {
+    id: '2',
+    name: 'Bob Smith',
+    username: 'bobsmith',
+    avatar: 'https://i.pravatar.cc/150?img=2',
+    lastMessage: 'Got it, thanks!',
+    status: 'offline',
+    messageTime: 'Yesterday',
+  },
+  {
+    id: '3',
+    name: 'Carla Stevens',
+    username: 'carla_s',
+    avatar: 'https://i.pravatar.cc/150?img=3',
+    lastMessage: "Can't talk now, busy!",
+    status: 'away',
+    messageTime: '10:45 AM',
+  },
+  {
+    id: '4',
+    name: 'David Lee',
+    username: 'davidl',
+    avatar: 'https://i.pravatar.cc/150?img=4',
+    lastMessage: 'See you tomorrow.',
+    status: 'online',
+    messageTime: 'Monday, 12 Aug',
+  },
+  {
+    id: '5',
+    name: 'Ella Brown',
+    username: 'ellab',
+    avatar: 'https://i.pravatar.cc/150?img=5',
+    lastMessage: 'Lol 😂',
+    status: 'offline',
+    messageTime: '2 hours ago',
+  },
+  {
+    id: '6',
+    name: 'Franklin Harris',
+    username: 'frankh',
+    avatar: 'https://i.pravatar.cc/150?img=6',
+    lastMessage: "Let's meet at 6 PM.",
+    status: 'away',
+    messageTime: 'Yesterday, 7:00 PM',
+  },
+  {
+    id: '7',
+    name: 'Grace Kim',
+    username: 'gracek',
+    avatar: 'https://i.pravatar.cc/150?img=7',
+    lastMessage: 'Thank you so much!',
+    status: 'online',
+    messageTime: '3 mins ago',
+  },
+  {
+    id: '8',
+    name: 'Henry Walker',
+    username: 'henryw',
+    avatar: 'https://i.pravatar.cc/150?img=8',
+    lastMessage: 'On my way.',
+    status: 'offline',
+    messageTime: 'Yesterday',
+  },
+  {
+    id: '9',
+    name: 'Isla Martinez',
+    username: 'islam',
+    avatar: 'https://i.pravatar.cc/150?img=9',
+    lastMessage: 'Call me when free.',
+    status: 'online',
+    messageTime: '9:30 AM',
+  },
+  {
+    id: '10',
+    name: 'Jackie Wilson',
+    username: 'jackiew',
+    avatar: 'https://i.pravatar.cc/150?img=10',
+    lastMessage: 'Check your email.',
+    status: 'away',
+    messageTime: 'Friday, 9 Aug',
+  },
+  {
+    id: '11',
+    name: 'Kevin Moore',
+    username: 'kevinm',
+    avatar: 'https://i.pravatar.cc/150?img=11',
+    lastMessage: 'Sounds good.',
+    status: 'online',
+    messageTime: '1 hour ago',
+  },
+  {
+    id: '12',
+    name: 'Lily Anderson',
+    username: 'lilya',
+    avatar: 'https://i.pravatar.cc/150?img=12',
+    lastMessage: 'See you soon!',
+    status: 'offline',
+    messageTime: 'Today, 11:20 AM',
+  },
+  {
+    id: '13',
+    name: 'Michael Scott',
+    username: 'michaels',
+    avatar: 'https://i.pravatar.cc/150?img=13',
+    lastMessage: "That's hilarious 😂",
+    status: 'online',
+    messageTime: 'Just now',
+  },
+  {
+    id: '14',
+    name: 'Nora Patel',
+    username: 'norap',
+    avatar: 'https://i.pravatar.cc/150?img=14',
+    lastMessage: 'I will send it tomorrow.',
+    status: 'away',
+    messageTime: 'Yesterday, 5:45 PM',
+  },
+  {
+    id: '15',
+    name: 'Oscar Reed',
+    username: 'oscar_r',
+    avatar: 'https://i.pravatar.cc/150?img=15',
+    lastMessage: 'Can you review this?',
+    status: 'online',
+    messageTime: 'Tuesday, 13 Aug',
+  },
+  {
+    id: '16',
+    name: 'Paula Rivera',
+    username: 'paular',
+    avatar: 'https://i.pravatar.cc/150?img=16',
+    lastMessage: 'Thanks for your help!',
+    status: 'offline',
+    messageTime: '10 mins ago',
+  },
+  {
+    id: '17',
+    name: 'Quinn Turner',
+    username: 'quinnt',
+    avatar: 'https://i.pravatar.cc/150?img=17',
+    lastMessage: 'I’ll call you later.',
+    status: 'away',
+    messageTime: 'Yesterday',
+  },
+  {
+    id: '18',
+    name: 'Rachel Young',
+    username: 'rachely',
+    avatar: 'https://i.pravatar.cc/150?img=18',
+    lastMessage: 'Meeting at 3 PM.',
+    status: 'online',
+    messageTime: 'Today, 2:15 PM',
+  },
+  {
+    id: '19',
+    name: 'Sam Wilson',
+    username: 'samw',
+    avatar: 'https://i.pravatar.cc/150?img=19',
+    lastMessage: 'Okay, got it.',
+    status: 'offline',
+    messageTime: '3 hours ago',
+  },
+  {
+    id: '20',
+    name: 'Tina Lopez',
+    username: 'tinal',
+    avatar: 'https://i.pravatar.cc/150?img=20',
+    lastMessage: 'Happy Birthday! 🎉',
+    status: 'online',
+    messageTime: 'Sunday, 11 Aug',
+  },
+];
+
+export default function Home() {
+  return (
+    <>
+      <Tabs.Screen
+        options={{
+          title: 'messenger',
+          headerRightContainerStyle: {
+            gap: 12,
+            paddingRight: 12,
+          },
+
+          headerRight({ tintColor }) {
+            return (
+              <>
+                <Feather name="edit" size={20} color={tintColor} />
+                <FontAwesome5 name="facebook" size={20} color={tintColor} />
+              </>
+            );
+          },
+          tabBarLabel: 'Chats',
+          tabBarIcon: ({ color, size }) => {
+            return <Ionicons name="chatbubble" size={20} color={color} />;
+          },
+        }}
+      />
+      <View style={{ backgroundColor: '#fff', flex: 1, paddingHorizontal: 12, gap: 12 }}>
+        <View
+          style={{
+            position: 'relative',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#E7E7E7',
+            borderRadius: 50,
+            paddingStart: 40,
+          }}>
+          <FontAwesome
+            name="search"
+            size={18}
+            color={'#B6B6B6'}
+            style={{
+              position: 'absolute',
+              left: 12,
+            }}
+          />
+          <TextInput placeholder="Search" style={{ width: '100%' }} />
+        </View>
+        <View>
+          <FlatList
+            data={dummyUsers}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            ListHeaderComponent={() => (
+              <View
+                style={{
+                  borderRadius: '100%',
+                  marginRight: 10,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <View
+                  style={{
+                    position: 'relative',
+                    width: 70,
+                    height: 70,
+                    borderRadius: 45,
+                  }}>
+                  <Image
+                    source={{ uri: 'https://avatars.githubusercontent.com/u/137907119?s=96&v=4' }}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderRadius: 45,
+                    }}
+                  />
+                  <Text style={{ fontSize: 10 }}>Leave a note...</Text>
+                </View>
+              </View>
+            )}
+            ItemSeparatorComponent={() => <View style={{ width: 10 }} />}
+            renderItem={({ item, index }) => (
+              <View
+                key={index}
+                style={{
+                  borderRadius: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <View
+                  style={{
+                    position: 'relative',
+                    width: 70,
+                    height: 70,
+                    borderRadius: 45,
+                  }}>
+                  <Image
+                    source={{ uri: item.avatar }}
+                    style={{
+                      width: 70,
+                      height: 70,
+                      borderRadius: 45,
+                    }}
+                  />
+                  {item.status === 'online' && <Badge bg="#008000" />}
+                  {item.status === 'away' && <Badge bg="#FFFF00" />}
+                  {item.status === 'offline' && <Badge bg="#ff0000" />}
+                </View>
+                <Text>{item.name.split(' ')[0]}</Text>
+              </View>
+            )}
+          />
+        </View>
+
+        <View style={{ flex: 1 }}>
+          <FlatList
+            data={dummyUsers}
+            ListFooterComponent={() => (
+              <Text style={{ textAlign: 'center' }}>Your chat history ends here</Text>
+            )}
+            ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <Link
+                href={{
+                  pathname: '/chat',
+                  params: {
+                    username: item.username,
+                  },
+                }}
+                asChild>
+                <Pressable
+                  android_ripple={{
+                    color: 'rgba(50,50,50,0.3)',
+                    borderless: false,
+                  }}
+                  style={{
+                    padding: 8,
+                    borderRadius: 120,
+                    alignItems: 'center',
+                  }}>
+                  <View
+                    key={index}
+                    style={{
+                      width: '100%',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      justifyContent: 'flex-start',
+                      gap: 8,
+                    }}>
+                    <Image
+                      source={{ uri: item.avatar }}
+                      style={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: 25,
+                      }}
+                    />
+                    <View
+                      style={{
+                        gap: 3,
+                      }}>
+                      <Text
+                        style={{
+                          fontWeight: 'bold',
+                        }}>
+                        {item.name}
+                      </Text>
+                      <Text
+                        style={{
+                          fontSize: 12,
+                          color: '#808080',
+                        }}>
+                        {item.lastMessage} . {item.messageTime}
+                      </Text>
+                    </View>
+                  </View>
+                </Pressable>
+              </Link>
+            )}
+          />
+        </View>
+      </View>
+    </>
+  );
+}
+
+// className="relative flex h-14 flex-row items-center rounded-full bg-[#B6B6B6] ps-10"
+const styles = {};
+
+const Badge = ({ bg }: { bg: string }) => {
+  return (
+    <View
+      style={{
+        backgroundColor: bg,
+        height: 15,
+        width: 15,
+        borderRadius: 10,
+        bottom: 0,
+        right: 7,
+        position: 'absolute',
+        borderWidth: 2,
+        borderColor: '#fff',
+      }}></View>
+  );
+};
